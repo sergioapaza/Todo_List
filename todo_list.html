@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>DBP</title>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('#new-task').onsubmit = () => {
+          // Crear la casilla de verificación
+          const cb = document.createElement("INPUT");
+          cb.setAttribute("type", "checkbox");
+
+          // Crear elemento <li> para la tarea
+          const li = document.createElement('li');
+
+          // Añadir la casilla de verificación y el texto de la tarea
+          li.appendChild(cb);
+          const taskText = document.createTextNode(document.querySelector('#task').value);
+          li.appendChild(taskText);
+
+          // Añadir botón "X" para eliminar la tarea
+          const removeBtn = document.createElement('button');
+          removeBtn.textContent = 'X';
+          removeBtn.style.marginLeft = '10px'; // Espacio entre la tarea y la "X"
+          li.appendChild(removeBtn);
+
+          // Evento para tachar la tarea cuando se marque la casilla
+          cb.addEventListener('change', () => {
+            if (cb.checked) {
+              li.style.textDecoration = "line-through";
+            } else {
+              li.style.textDecoration = "none";
+            }
+          });
+
+          // Evento para eliminar la tarea cuando se haga clic en la "X"
+          removeBtn.addEventListener('click', () => {
+            li.remove();
+          });
+
+          // Añadir el elemento <li> a la lista de tareas
+          document.querySelector('#tasks').append(li);
+          document.querySelector('#task').value = ''; // Limpiar el campo de entrada
+
+          return false;
+        };
+
+        // Evento para marcar todas las tareas como completadas
+        document.querySelector('#complete-all').addEventListener('click', () => {
+          const tasks = document.querySelectorAll('#tasks li input[type="checkbox"]');
+          tasks.forEach(task => {
+            task.checked = true;
+            task.parentElement.style.textDecoration = "line-through";
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <p>Computer Science</p>
+    <h1>Tasks</h1>
+    <form id="new-task">
+      <input id="task" autocomplete="off" autofocus placeholder="New Task" type="text">
+      <input type="submit">
+    </form>
+    
+    <button id="complete-all">Complete all</button>
+
+    <ol id="tasks">
+    </ol>
+  </body>
+</html>
